@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{21C95E2C-0C84-49D0-9087-F5DEB1B7CEBD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CFManzana</RootNamespace>
+    <AssemblyName>CFManzana</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CoreFoundation\CFAdapter.cs" />
+    <Compile Include="CoreFoundation\CFAllocator.cs" />
+    <Compile Include="CoreFoundation\CFArray.cs" />
+    <Compile Include="CoreFoundation\CFBoolean.cs" />
+    <Compile Include="CoreFoundation\CFData.cs" />
+    <Compile Include="CoreFoundation\CFDate.cs" />
+    <Compile Include="CoreFoundation\CFDictionary.cs" />
+    <Compile Include="CoreFoundation\CFDictionaryCallBacks.cs" />
+    <Compile Include="CoreFoundation\CFError.cs" />
+    <Compile Include="CoreFoundation\CFGregorianDate.cs" />
+    <Compile Include="CoreFoundation\CFGregorianUnits.cs" />
+    <Compile Include="CoreFoundation\CFIndex.cs" />
+    <Compile Include="CoreFoundation\CFLibrary.cs" />
+    <Compile Include="CoreFoundation\CFNumber.cs" />
+    <Compile Include="CoreFoundation\CFPropertyList.cs" />
+    <Compile Include="CoreFoundation\CFRange.cs" />
+    <Compile Include="CoreFoundation\CFRunLoop.cs" />
+    <Compile Include="CoreFoundation\CFString.cs" />
+    <Compile Include="CoreFoundation\CFStringEncoding.cs" />
+    <Compile Include="CoreFoundation\CFTemplate.cs" />
+    <Compile Include="CoreFoundation\CFType.cs" />
+    <Compile Include="Manzana\ConnectEventArgs.cs" />
+    <Compile Include="Manzana\ConnectEventHandler.cs" />
+    <Compile Include="Manzana\DeviceNotificationEventArgs.cs" />
+    <Compile Include="Manzana\iPhone.cs" />
+    <Compile Include="Manzana\iPhoneFile.cs" />
+    <Compile Include="Manzana\MobileDevice.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
