@@ -64,6 +64,9 @@ namespace CoreFoundation
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern IntPtr CFDictionaryGetKeysAndValues(CFDictionaryRef theDict,IntPtr[] keys,IntPtr[] values);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern IntPtr CFDictionaryCreate(IntPtr allocator, IntPtr[] keys, IntPtr[] values,int numValues,IntPtr kcall,IntPtr vcall);
         #endregion
         #region CFPropertyList
         
@@ -71,7 +74,7 @@ namespace CoreFoundation
         public static unsafe extern bool CFPropertyListIsValid(CFPropertyListRef theList,IntPtr theFormat);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern string CFPropertyListCreateXMLData(CFPropertyListRef theAllocator,IntPtr theList);
+        public static unsafe extern IntPtr CFPropertyListCreateXMLData(CFPropertyListRef theAllocator,IntPtr theList);
         #endregion
         #region CFNumber
         
@@ -93,6 +96,9 @@ namespace CoreFoundation
              
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern int CFArrayGetCount(CFArrayRef theArray);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern IntPtr CFArrayGetValueAtIndex(CFArrayRef theArray,int index);
         #endregion
     }
 }

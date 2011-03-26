@@ -149,15 +149,7 @@ namespace Manzana {
 					addpath = @"C:\Program Files\Apple\Mobile Device Support\bin";
 			}
             Environment.SetEnvironmentVariable("Path", string.Join(";", new String[] { Environment.GetEnvironmentVariable("Path"), addpath, ApplicationSupportDirectory.FullName }));
-        }
-
-        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern void* __CFStringMakeConstantString(byte[] s);
-
-        public static unsafe void* CFStringMakeConstantString(string s)
-        {
-            return __CFStringMakeConstantString(StringToCString(s));
-        }
+        }       
 
 		[DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
 		unsafe public extern static int AMDeviceNotificationSubscribe(DeviceNotificationCallback callback, uint unused1, uint unused2, uint unused3, out void* am_device_notification_ptr);
@@ -293,29 +285,7 @@ namespace Manzana {
 		unsafe public extern static int AFCFileRefSetFileSize(void* conn, Int64 handle, uint size);
 
 		[DllImport(DLLName, CallingConvention=CallingConvention.Cdecl)]
-		unsafe public extern static int AFCDirectoryCreate(void* conn, string path);
-        
-		public static byte[] StringToCFString(string value) {
-			byte[] b;
-
-			b = new byte[value.Length + 10];
-			b[4] = 0x8c;
-			b[5] = 07;
-			b[6] = 01;
-			b[8] = (byte)value.Length;
-			Encoding.ASCII.GetBytes(value, 0, value.Length, b, 9);
-			return b;
-		}
-
-		public static byte[] StringToCString(string value) {
-			byte[] bytes = new byte[value.Length + 1];
-			Encoding.ASCII.GetBytes(value, 0, value.Length, bytes, 0);
-			return bytes;
-		}
-        
-		public static string CFStringToString(byte[] value) {
-			return Encoding.ASCII.GetString(value, 9, value[9]);
-		}
+		unsafe public extern static int AFCDirectoryCreate(void* conn, string path);       
         
 	}
 

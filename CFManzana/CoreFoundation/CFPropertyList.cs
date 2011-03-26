@@ -16,7 +16,7 @@ namespace CoreFoundation
         /// <returns></returns>
         public override string ToString()
         {
-            return CFLibrary.CFPropertyListCreateXMLData(IntPtr.Zero,theList);
+            return Encoding.UTF8.GetString(new CFData(CFLibrary.CFPropertyListCreateXMLData(IntPtr.Zero, theList)).ToByteArray());
         }                
     }
 }

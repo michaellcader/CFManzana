@@ -36,6 +36,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -49,7 +52,6 @@
     <Compile Include="CoreFoundation\CFData.cs" />
     <Compile Include="CoreFoundation\CFDate.cs" />
     <Compile Include="CoreFoundation\CFDictionary.cs" />
-    <Compile Include="CoreFoundation\CFDictionaryCallBacks.cs" />
     <Compile Include="CoreFoundation\CFError.cs" />
     <Compile Include="CoreFoundation\CFGregorianDate.cs" />
     <Compile Include="CoreFoundation\CFGregorianUnits.cs" />
@@ -69,7 +71,21 @@
     <Compile Include="Manzana\iPhone.cs" />
     <Compile Include="Manzana\iPhoneFile.cs" />
     <Compile Include="Manzana\MobileDevice.cs" />
+    <Compile Include="PlistLib\PlistArray.cs" />
+    <Compile Include="PlistLib\PlistBoolean.cs" />
+    <Compile Include="PlistLib\PlistData.cs" />
+    <Compile Include="PlistLib\PlistDate.cs" />
+    <Compile Include="PlistLib\PlistDictionary.cs" />
+    <Compile Include="PlistLib\PlistDocument.cs" />
+    <Compile Include="PlistLib\PlistInteger.cs" />
+    <Compile Include="PlistLib\PlistObject.cs" />
+    <Compile Include="PlistLib\PlistObjectBase.cs" />
+    <Compile Include="PlistLib\PlistReal.cs" />
+    <Compile Include="PlistLib\PlistString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.manifest" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

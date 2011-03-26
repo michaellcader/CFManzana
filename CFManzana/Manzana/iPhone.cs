@@ -132,9 +132,15 @@ namespace Manzana {
             return MobileDevice.AMDeviceDeactivate(iPhoneHandle);
         }
 
-        unsafe public IntPtr ActivationInfo()
-        {
+        /// <summary>
+        /// Return the ActivationInfo of the device
+        /// </summary>
+        /// <returns></returns>
+        unsafe public IntPtr ActivationInfo
+        {   
+            get {
             return MobileDevice.AMDeviceCopyValue_IntPtr(iPhoneHandle, 0, new CFString("ActivationInfo").ToIntPtr());
+            }
         }
 
 		/// <summary>
@@ -145,6 +151,14 @@ namespace Manzana {
 				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "BasebandVersion");
 			}
 		}
+
+        unsafe public string DeviceVersion
+        {
+            get
+            {
+                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "DeviceVersion");
+            }
+        }
         /// <summary>
         /// Gets Model Numer
         /// </summary>
@@ -173,6 +187,14 @@ namespace Manzana {
             get
             {
                 return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "ProductType");
+            }
+        }
+
+        unsafe public string SerialNumber
+        {
+            get
+            {
+                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "SerialNumber");
             }
         }
 		/// <summary>
@@ -642,8 +664,8 @@ namespace Manzana {
 				return false;
 			}
 
-            if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.CFStringMakeConstantString("com.apple.afc2"), ref hService, null) != 0) {
-                if (MobileDevice.AMDeviceStartService(iPhoneHandle, MobileDevice.CFStringMakeConstantString("com.apple.afc"), ref hService, null) != 0) {
+            if (MobileDevice.AMDeviceStartService(iPhoneHandle, new CFString("com.apple.afc2").ToIntPtr().ToPointer(), ref hService, null) != 0) {
+                if (MobileDevice.AMDeviceStartService(iPhoneHandle, new CFString("com.apple.afc").ToIntPtr().ToPointer(), ref hService, null) != 0) {
                     return false;
                 }
             }
