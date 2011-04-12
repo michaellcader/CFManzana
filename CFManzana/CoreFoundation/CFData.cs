@@ -11,6 +11,24 @@ namespace CoreFoundation
 
         public CFData(){}
         public CFData(IntPtr Data){this.theData = Data;}
+        unsafe public CFData(byte[] Data)
+        {            
+            byte[] buffer = Data;            
+            int len = buffer.Length;            
+            fixed (byte* bytePtr = buffer)
+                
+                theData = CFLibrary.CFDataCreate(IntPtr.Zero, (IntPtr)bytePtr,len);            
+        }
+
+        private int gettheLength(byte[] data)
+        {
+            int ret = 0;
+            for (int i = 0; i <= data.Length; i++)
+            {
+                ret += (int)data[0];
+            }
+            return ret;
+        }
         /// <summary>
         /// Returns the number of bytes contained by the CFData object
         /// </summary>
@@ -40,6 +58,10 @@ namespace CoreFoundation
             return buffer;            
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return theData;
+        }
         
     }
 }

@@ -8,11 +8,18 @@ using System.Runtime.InteropServices;
 namespace CoreFoundation
 {
    
-    public class CFString
-    {
+    public class CFString 
+    {       
         internal IntPtr theString;        
-
-        public CFString(){}
+        
+        public CFString()
+        {
+            
+        }       
+        private void getcha(IntPtr CFThing)
+        {
+            theString = CFThing;
+        }
         /// <summary>
         /// Creates an immutable string from a constant compile-time string
         /// </summary>
@@ -40,6 +47,7 @@ namespace CoreFoundation
         /// <returns></returns>
         public override string ToString()
         {
+            
 
             if (theString == IntPtr.Zero)
                 return null;
@@ -70,8 +78,7 @@ namespace CoreFoundation
         /// <returns></returns>
         public bool isCFString()
         {
-            return CFLibrary.CFGetTypeID(theString) == CFType._CFString;         
-            
+            return CFLibrary.CFGetTypeID(theString) == CFType._CFString;                     
         }
           
     }

@@ -11,9 +11,12 @@ namespace CoreFoundation
 
         public CFNumber() { }
         public CFNumber(IntPtr Number){theNumber = Number;}
-        public IntPtr Ref { get { return theNumber; } set { theNumber = value; } }
-        
-        internal enum CFNumberType 
+        unsafe public CFNumber(int Number) 
+        {
+            int* pNumber=&Number;
+            theNumber = CFLibrary.CFNumberCreate(IntPtr.Zero, CFNumberType.kCFNumberIntType, pNumber);
+        }       
+        public enum CFNumberType 
         { 
             kCFNumberSInt8Type = 1, 
             kCFNumberSInt16Type = 2, 
@@ -33,7 +36,10 @@ namespace CoreFoundation
             kCFNumberCGFloatType = 16, 
             kCFNumberMaxType = 16 
         };
-        
+        public IntPtr ToIntPtr()
+        {
+            return theNumber;
+        }
         /// <summary>
         /// Obtains the value of a CFNumber object as a string
         /// </summary>

@@ -180,6 +180,16 @@ namespace Manzana {
             }
         }
         /// <summary>
+        /// Returns the ECID
+        /// </summary>
+        unsafe public string ECID
+        {
+            get
+            {
+                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "UniqueChipID");
+            }
+        }
+        /// <summary>
         /// Gets ProductType
         /// </summary>
         unsafe public string ProductType
@@ -197,6 +207,47 @@ namespace Manzana {
                 return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "SerialNumber");
             }
         }
+        /// <summary>
+        /// Returns The ICCID
+        /// </summary>
+        unsafe public string ICCID
+        {
+            get
+            {
+                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "IntegratedCircuitCardIdentity");
+            }
+        }
+        /// <summary>
+        /// Returns the IMEI
+        /// </summary>
+        unsafe public string IMEI
+        {
+            get
+            {
+                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "InternationalMobileEquipmentIdentity");
+            }
+        }
+        /// <summary>
+        /// Returns the IMSI
+        /// </summary>
+        unsafe public string IMSI
+        {
+            get
+            {
+                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "InternationalMobileSubscriberIdentity");
+            }
+        }
+        /// <summary>
+        /// Returns the PhoneNumber
+        /// </summary>
+        unsafe public string PhoneNumber
+        {
+            get
+            {
+                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "PhoneNumber");
+            }
+        }
+
 		/// <summary>
 		/// Returns true if an iPhone is connected to the computer
 		/// </summary>

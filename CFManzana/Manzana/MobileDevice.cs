@@ -233,11 +233,11 @@ namespace Manzana {
 		[DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
 		unsafe public extern static int AFCConnectionClose(void* conn);
 
-		unsafe public static string AMDeviceCopyValue(void* device, string name) {            
+		unsafe public static string AMDeviceCopyValue(void* device, string name) {               
             IntPtr result = AMDeviceCopyValue_IntPtr(device, 0, new CFString(name).ToIntPtr());            
             if (result==IntPtr.Zero)
                 return name;
-            return new CFString(result).ToString();            
+            return new CFType(result).ToString();            
 		}
 
         [DllImport(DLLName, EntryPoint = "AMDeviceCopyValue", CallingConvention = CallingConvention.Cdecl)]

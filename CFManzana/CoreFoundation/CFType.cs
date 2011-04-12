@@ -66,5 +66,28 @@ namespace CoreFoundation
             }
             return String.Empty;  
         }
+        public string ToString()
+        {
+            switch (CFLibrary.CFGetTypeID(typeRef))
+            {
+                case _CFString:
+                    return new CFString(typeRef).ToString();
+                case _CFDictionary:
+                    return new CFPropertyList(typeRef).ToString();
+                case _CFArray:
+                    return new CFArray(typeRef).getCount().ToString();
+                case _CFData:
+                    return "CFData";
+                case _CFBoolean:
+                    return new CFBoolean(typeRef).ToBoolean().ToString();
+                case _CFNumber:
+                    return new CFNumber(typeRef).ToString();
+                case _CFError:
+                    return "CFError";
+                case _CFUUID:
+                    return "CFUUID";
+            }
+            return null;
+        }
     }
 }

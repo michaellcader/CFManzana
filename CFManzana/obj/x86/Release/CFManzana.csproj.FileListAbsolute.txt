@@ -1,0 +1,5 @@
+C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\bin\Release\CFManzana.dll
+C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\bin\Release\CFManzana.pdb
+C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\obj\x86\Release\CFManzana.dll
+C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\obj\x86\Release\CFManzana.pdb

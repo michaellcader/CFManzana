@@ -14,23 +14,20 @@ namespace CoreFoundation
 
         public CFDictionary(IntPtr dictionary){this.theDict = dictionary;}
 
-        unsafe public CFDictionary(string[] keys,string[] values)
+        unsafe public CFDictionary(string[] keys,IntPtr[] values)
         {
-            IntPtr[] keyz = new IntPtr[keys.Length];
-            IntPtr[] valuez = new IntPtr[values.Length];
+            IntPtr[] keyz = new IntPtr[keys.Length];            
             int i;
             for (i = 0; i < keys.Length; i++)
             {
-                keyz[i] = new CFString(keys[i]).ToIntPtr();
-                valuez[i] = new CFString(values[i]).ToIntPtr();
+                keyz[i] = new CFString(keys[i]).ToIntPtr();                
             }
                         
-            theDict = CFLibrary.CFDictionaryCreate(IntPtr.Zero,keyz,valuez,keys.Length,IntPtr.Zero,IntPtr.Zero);            
+            theDict = CFLibrary.CFDictionaryCreate(IntPtr.Zero,keyz,values,keys.Length,IntPtr.Zero,IntPtr.Zero);            
         }
        
         public IntPtr getDataValue(string value)
-        {
-            
+        {            
             return CFLibrary.CFDictionaryGetValue(theDict, new CFString(value).ToIntPtr());            
         }
         /// <summary>
@@ -62,7 +59,10 @@ namespace CoreFoundation
             }
             return sb.ToString();
         }
-
+        public IntPtr ToIntPtr()
+        {
+            return this.theDict;
+        }
         private string parseValue(IntPtr typeRef)
         {
             if (typeRef == IntPtr.Zero)
