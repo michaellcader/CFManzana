@@ -72,17 +72,6 @@
     <Compile Include="Manzana\iPhone.cs" />
     <Compile Include="Manzana\iPhoneFile.cs" />
     <Compile Include="Manzana\MobileDevice.cs" />
-    <Compile Include="PlistLib\PlistArray.cs" />
-    <Compile Include="PlistLib\PlistBoolean.cs" />
-    <Compile Include="PlistLib\PlistData.cs" />
-    <Compile Include="PlistLib\PlistDate.cs" />
-    <Compile Include="PlistLib\PlistDictionary.cs" />
-    <Compile Include="PlistLib\PlistDocument.cs" />
-    <Compile Include="PlistLib\PlistInteger.cs" />
-    <Compile Include="PlistLib\PlistObject.cs" />
-    <Compile Include="PlistLib\PlistObjectBase.cs" />
-    <Compile Include="PlistLib\PlistReal.cs" />
-    <Compile Include="PlistLib\PlistString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
