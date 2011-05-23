@@ -47,8 +47,9 @@ namespace CoreFoundation
             {
                 keyz[i] = new CFString(keys[i]).ToIntPtr();                
             }
-                        
-            theDict = CFLibrary.CFDictionaryCreate(IntPtr.Zero,keyz,values,keys.Length,IntPtr.Zero,IntPtr.Zero);            
+            CFDictionaryKeyCallBacks kcall = new CFDictionaryKeyCallBacks();
+            CFDictionaryValueCallBacks vcall = new CFDictionaryValueCallBacks();                        
+            theDict = CFLibrary.CFDictionaryCreate(IntPtr.Zero,keyz,values,keys.Length,ref kcall,ref vcall);            
         }
        
         public IntPtr getDataValue(string value)
@@ -76,11 +77,13 @@ namespace CoreFoundation
             string[] valuez = new string[Length()];            
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < Length(); i++)
-            {                
+            {
+                sb.Append("<key>");
                 keyz[i] = new CFString(keys[i]).ToString();
-                sb.Append(keyz[i] + "\n");
+                sb.Append(keyz[i] + "</key>\n");
+                sb.Append("<value>");
                 valuez[i] = parseValue(values[i]);                
-                sb.Append(valuez[i] + "\n"); 
+                sb.Append(valuez[i] + "</value>\n"); 
             }
             return sb.ToString();
         }
@@ -96,7 +99,7 @@ namespace CoreFoundation
             switch (desc)
             {
                 case "CFArray":
-                    return null; //refer to cf tinyumbrella
+                    return null; 
                 case "CFBoolean":
                     return new CFBoolean(typeRef).ToBoolean().ToString();                
                 case "CFString":
@@ -116,12 +119,13 @@ namespace CoreFoundation
         }
     }
 
-            
+            /*
         public delegate IntPtr CFDictionaryRetainCallBack(IntPtr allocator, IntPtr type); 
         public delegate IntPtr CFDictionaryReleaseCallBack(IntPtr allocator, IntPtr type);
         public delegate IntPtr CFDictionaryCopyDescriptionCallBack(IntPtr type);
         public delegate IntPtr CFDictionaryEqualCallBack(IntPtr type1,IntPtr type2);
         public delegate int CFDictionaryHashCallBack(IntPtr type);
+             */
         public struct CFDictionaryKeyCallBacks
         {
             CFIndex version;
@@ -140,8 +144,29 @@ namespace CoreFoundation
             CFDictionaryCopyDescriptionCallBack copyDescription;
             CFDictionaryEqualCallBack equal;
         };
-
-        
-
     
+    public interface CFDictionaryRetainCallBack
+    {
+        IntPtr invoke(IntPtr paramCFAllocator, IntPtr paramCFType);
+    }
+
+    public interface CFDictionaryReleaseCallBack
+    {
+        void invoke(IntPtr paramCFAllocator, IntPtr paramCFType);
+    }
+
+    public interface CFDictionaryCopyDescriptionCallBack
+    {
+        IntPtr invoke(IntPtr paramCFType);
+    }
+
+    public interface CFDictionaryEqualCallBack
+    {
+        bool invoke(IntPtr paramCFType1, IntPtr paramCFType2);
+    }
+
+    public interface CFDictionaryHashCallBack
+    {
+        int invoke(IntPtr paramCFType);
+    }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFManzana", "CFManzana\CFManzana.csproj", "{21C95E2C-0C84-49D0-9087-F5DEB1B7CEBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFManzana", "CFManzana.csproj", "{21C95E2C-0C84-49D0-9087-F5DEB1B7CEBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

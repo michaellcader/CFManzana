@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using CoreFoundation;
 
-namespace Manzana {
+namespace CFManzana {
 	/// <summary>
 	/// Exposes access to the Apple iPhone
 	/// </summary>

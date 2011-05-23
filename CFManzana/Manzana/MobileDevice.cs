@@ -33,7 +33,7 @@ using Microsoft.Win32;
 using CoreFoundation;
 using CFNumberRef = CoreFoundation.CFNumber;
 
-namespace Manzana {
+namespace CFManzana {
 	internal enum AppleMobileErrors
 	{
 

@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Manzana
+namespace CFManzana
 {
 	/// <summary>
 	/// Represents the method that will handle the <see>Connected</see> and <see>Disconnected</see> event.

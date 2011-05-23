@@ -85,7 +85,7 @@ namespace CoreFoundation
         public static unsafe extern CFDictionaryRef CFDictionaryGetKeysAndValues(CFDictionaryRef theDict, IntPtr[] keys, IntPtr[] values);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern CFDictionaryRef CFDictionaryCreate(IntPtr allocator, IntPtr[] keys, IntPtr[] values, int numValues, IntPtr kcall, IntPtr vcall);
+        public static unsafe extern CFDictionaryRef CFDictionaryCreate(IntPtr allocator, IntPtr[] keys, IntPtr[] values, int numValues, ref CFDictionaryKeyCallBacks kcall, ref CFDictionaryValueCallBacks vcall);
         #endregion
         #region CFNumber
 

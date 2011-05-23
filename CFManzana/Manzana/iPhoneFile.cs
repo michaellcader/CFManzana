@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Manzana {
+namespace CFManzana {
 	/// <summary>
 	/// Exposes a stream to a file on an iPhone, supporting both synchronous and asynchronous read and write operations
 	/// </summary>
