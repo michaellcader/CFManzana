@@ -82,13 +82,13 @@ namespace CoreFoundation
             switch(type)
             {
                 case 1:
-                    return Marshal.ReadInt16(theNumber).ToString();
+                    return Marshal.ReadInt16(buffer).ToString();
                 case 2:
-                    return Marshal.ReadInt16(theNumber).ToString();
+                    return Marshal.ReadInt16(buffer).ToString();
                 case 3:
-                    return Marshal.ReadInt32(theNumber).ToString();
+                    return Marshal.ReadInt32(buffer).ToString();
                 case 4:
-                    return Marshal.ReadInt64(theNumber).ToString();
+                    return Marshal.ReadInt64(buffer).ToString();
                 default:
                     return Enum.GetName(typeof(CFNumberType),type) + " is not supported yet!";
             }            
