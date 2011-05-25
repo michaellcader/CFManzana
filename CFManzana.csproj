@@ -66,7 +66,6 @@
     <Compile Include="CoreFoundation\CFStringEncoding.cs" />
     <Compile Include="CoreFoundation\CFTemplate.cs" />
     <Compile Include="CoreFoundation\CFType.cs" />
-    <Compile Include="CoreFoundation\CFURL.cs" />
     <Compile Include="Manzana\ConnectEventArgs.cs" />
     <Compile Include="Manzana\ConnectEventHandler.cs" />
     <Compile Include="Manzana\DeviceNotificationEventArgs.cs" />
