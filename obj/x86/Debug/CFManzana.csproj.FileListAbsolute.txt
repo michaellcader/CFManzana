@@ -3,3 +3,8 @@ C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\bin\Debug\CFManzana.pdb
 C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\obj\x86\Debug\ResolveAssemblyReference.cache
 C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\obj\x86\Debug\CFManzana.dll
 C:\Users\kitty\Documents\Workspace\CFManzana\CFManzana\obj\x86\Debug\CFManzana.pdb
+C:\Users\kitty\Documents\Workspace\CFManzana\bin\Debug\CFManzana.dll
+C:\Users\kitty\Documents\Workspace\CFManzana\bin\Debug\CFManzana.pdb
+C:\Users\kitty\Documents\Workspace\CFManzana\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\kitty\Documents\Workspace\CFManzana\obj\x86\Debug\CFManzana.dll
+C:\Users\kitty\Documents\Workspace\CFManzana\obj\x86\Debug\CFManzana.pdb

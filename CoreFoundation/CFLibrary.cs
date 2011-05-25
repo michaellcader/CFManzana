@@ -110,7 +110,13 @@ namespace CoreFoundation
         public static unsafe extern CFPropertyListRef CFPropertyListCreateXMLData(CFPropertyListRef theAllocator, IntPtr theList);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern CFPropertyListRef CFPropertyListCreateFromXMLData(CFPropertyListRef theAllocator, IntPtr xmlData,IntPtr mutability,IntPtr errorString);
+        public static unsafe extern CFPropertyListRef CFPropertyListCreateFromStream(IntPtr allocator,IntPtr stream, int streamLength,int mutabilityOption,int format,IntPtr errorString);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern int CFPropertyListWriteToStream(IntPtr propertyList, IntPtr stream, int format,IntPtr errorString);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern bool CFPropertyListIsValid(IntPtr plist,int format);
         #endregion
         #region CFString
 
@@ -126,6 +132,16 @@ namespace CoreFoundation
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern CFStringRef CFStringGetCharacters(CFStringRef handle, CFRange range, IntPtr buffer);
         #endregion
+        #region CFReadStream
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern IntPtr CFReadStreamCreateWithFile(IntPtr alloc, CFURLRef fileURL);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern bool CFReadStreamOpen(IntPtr stream);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern void CFReadStreamClose(IntPtr stream);
+        #endregion
         #region CFType
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern int CFGetTypeID(CFTypeRef typeRef);
@@ -136,5 +152,19 @@ namespace CoreFoundation
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern CFStringRef CFCopyTypeIDDescription(int typeID);
         #endregion        
+        #region CFURL
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern CFURLRef CFURLCreateWithFileSystemPath(IntPtr allocator, CFStringRef filePath, int pathStyle, bool isDirectory);
+        #endregion
+        #region CFWriteStream
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern IntPtr CFWriteStreamCreateWithFile(IntPtr allocator, CFURLRef fileURL);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern bool CFWriteStreamOpen(IntPtr stream);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern void CFWriteStreamClose(IntPtr stream);
+        #endregion
     }
 }
