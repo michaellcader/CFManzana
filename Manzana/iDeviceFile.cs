@@ -31,9 +31,9 @@ using System.Text;
 
 namespace CFManzana {
 	/// <summary>
-	/// Exposes a stream to a file on an iPhone, supporting both synchronous and asynchronous read and write operations
+	/// Exposes a stream to a file on an iDevice, supporting both synchronous and asynchronous read and write operations
 	/// </summary>
-	public class iPhoneFile : Stream {
+	public class iDeviceFile : Stream {
 		private enum OpenMode {
 			None = 0,
 			Read = 2,
@@ -43,11 +43,11 @@ namespace CFManzana {
 		#region Fields
 		private OpenMode	mode;
 		private long		handle;
-		private iPhone		phone;
+		private iDevice		phone;
 		#endregion	// Fields;
 
 		#region Constructors
-		private iPhoneFile(iPhone phone, long handle, OpenMode mode) : base() {
+		private iDeviceFile(iDevice phone, long handle, OpenMode mode) : base() {
 			this.phone = phone;
 			this.mode = mode;
 			this.handle = handle;
@@ -126,7 +126,7 @@ namespace CFManzana {
 
 		#region Public Methods
 		/// <summary>
-		/// Releases the unmanaged resources used by iPhoneFile
+		/// Releases the unmanaged resources used by iDeviceFile
 		/// </summary>
 		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
 		unsafe protected override void Dispose(bool disposing) {
@@ -214,13 +214,13 @@ namespace CFManzana {
 
 		#region Static Methods
 		/// <summary>
-		/// Opens an iPhoneFile stream on the specified path
+		/// Opens an iDeviceFile stream on the specified path
 		/// </summary>
-		/// <param name="phone">A valid iPhone object</param>
+		/// <param name="phone">A valid iDevice object</param>
 		/// <param name="path">The file to open</param>
 		/// <param name="openmode">A <see cref="FileAccess"/> value that specifies the operations that can be performed on the file</param>
 		/// <returns></returns>
-		unsafe public static iPhoneFile Open(iPhone phone, string path, FileAccess openmode) {
+		unsafe public static iDeviceFile Open(iDevice phone, string path, FileAccess openmode) {
 			OpenMode	mode;
 			int			ret;
 			long		handle;
@@ -240,27 +240,27 @@ namespace CFManzana {
 				throw new IOException("AFCFileRefOpen failed with error " + ret.ToString());
 			}
 
-			return new iPhoneFile(phone, handle, mode);
+			return new iDeviceFile(phone, handle, mode);
 		}
 
 		/// <summary>
 		/// Opens a file for reading
 		/// </summary>
-		/// <param name="phone">A valid iPhone object</param>
+		/// <param name="phone">A valid iDevice object</param>
 		/// <param name="path">The file to be opened for reading</param>
-		/// <returns>An unshared <c>iPhoneFile</c> object on the specified path with Write access. </returns>
-		public static iPhoneFile OpenRead(iPhone phone, string path) {
-			return iPhoneFile.Open(phone, path, FileAccess.Read);
+		/// <returns>An unshared <c>iDeviceFile</c> object on the specified path with Write access. </returns>
+		public static iDeviceFile OpenRead(iDevice phone, string path) {
+			return iDeviceFile.Open(phone, path, FileAccess.Read);
 		}
 
 		/// <summary>
 		/// Opens a file for writing
 		/// </summary>
-		/// <param name="phone">A valid iPhone object</param>
+		/// <param name="phone">A valid iDevice object</param>
 		/// <param name="path">The file to be opened for writing</param>
-		/// <returns>An unshared <c>iPhoneFile</c> object on the specified path with Write access. </returns>
-		public static iPhoneFile OpenWrite(iPhone phone, string path) {
-			return iPhoneFile.Open(phone, path, FileAccess.Write);
+		/// <returns>An unshared <c>iDeviceFile</c> object on the specified path with Write access. </returns>
+		public static iDeviceFile OpenWrite(iDevice phone, string path) {
+			return iDeviceFile.Open(phone, path, FileAccess.Write);
 		}
 		#endregion	// Static Methods
 	}

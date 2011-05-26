@@ -43,17 +43,17 @@ namespace CFManzana {
 	/// Provides the fields representing the type of notification
 	/// </summary>
 	public enum NotificationMessage {
-		/// <summary>The iPhone was connected to the computer.</summary>
+		/// <summary>The iDevice was connected to the computer.</summary>
 		Connected		= 1,
-		/// <summary>The iPhone was disconnected from the computer.</summary>
+		/// <summary>The iDevice was disconnected from the computer.</summary>
 		Disconnected	= 2,
 
-		/// <summary>Notification from the iPhone occurred, but the type is unknown.</summary>
+		/// <summary>Notification from the iDevice occurred, but the type is unknown.</summary>
 		Unknown			= 3,
 	}
 
 	/// <summary>
-	/// Structure describing the iPhone - no longer used
+	/// Structure describing the iDevice - no longer used
 	/// </summary>
 	/// Just opaque block of memory - give a decent chunk
 	/// 
@@ -63,9 +63,9 @@ namespace CFManzana {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=16)]
 		internal byte[]		unknown0;		/* 0 - zero */
 		internal uint		device_id;		/* 16 */
-		internal uint		product_id;		/* 20 - set to AMD_IPHONE_PRODUCT_ID */
+		internal uint		product_id;		/* 20 - set to AMD_iDevice_PRODUCT_ID */
 		/// <summary>Write Me</summary>
-		public string		serial;			/* 24 - set to AMD_IPHONE_SERIAL */
+		public string		serial;			/* 24 - set to AMD_iDevice_SERIAL */
 		internal uint		unknown1;		/* 28 */
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst=4)]
 		internal byte[]		unknown2;		/* 32 */
@@ -223,9 +223,11 @@ namespace CFManzana {
 		unsafe public extern static int AFCConnectionClose(void* conn);
 
 		unsafe public static string AMDeviceCopyValue(void* device, string name) {               
-            IntPtr result = AMDeviceCopyValue_IntPtr(device, 0, new CFString(name).ToIntPtr());            
+            IntPtr result = AMDeviceCopyValue_IntPtr(device, 0, new CFString(name).ToIntPtr());      
+            
             if (result==IntPtr.Zero)
                 return name;
+             
             return new CFType(result).ToString();            
 		}
 

@@ -69,8 +69,8 @@
     <Compile Include="Manzana\ConnectEventArgs.cs" />
     <Compile Include="Manzana\ConnectEventHandler.cs" />
     <Compile Include="Manzana\DeviceNotificationEventArgs.cs" />
-    <Compile Include="Manzana\iPhone.cs" />
-    <Compile Include="Manzana\iPhoneFile.cs" />
+    <Compile Include="Manzana\iDevice.cs" />
+    <Compile Include="Manzana\iDeviceFile.cs" />
     <Compile Include="Manzana\MobileDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

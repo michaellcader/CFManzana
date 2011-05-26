@@ -35,9 +35,9 @@ using CoreFoundation;
 
 namespace CFManzana {
 	/// <summary>
-	/// Exposes access to the Apple iPhone
+	/// Exposes access to the Apple iDevice
 	/// </summary>
-	public class iPhone {
+	public class iDevice {
 		#region Locals
 		private DeviceNotificationCallback			dnc;
 		private DeviceRestoreNotificationCallback	drn1;
@@ -45,7 +45,7 @@ namespace CFManzana {
 		private DeviceRestoreNotificationCallback	drn3;
 		private DeviceRestoreNotificationCallback	drn4;
 
-        unsafe internal void* iPhoneHandle;
+        unsafe internal void* iDeviceHandle;
         unsafe internal void* hAFC;
 		unsafe internal void* hService;
 		private bool		connected;
@@ -55,7 +55,7 @@ namespace CFManzana {
 
 		#region Constructors
 		/// <summary>
-		/// Initializes a new iPhone object.
+		/// Initializes a new iDevice object.
 		/// </summary>
 		unsafe private void doConstruction() {
 			dnc = new DeviceNotificationCallback(NotifyCallback);
@@ -78,18 +78,18 @@ namespace CFManzana {
 		}
 
 		/// <summary>
-		/// Creates a new iPhone object. If an iPhone is connected to the computer, a connection will automatically be opened.
+		/// Creates a new iDevice object. If an iDevice is connected to the computer, a connection will automatically be opened.
 		/// </summary>
-		public iPhone () {
+		public iDevice () {
 			doConstruction();
 		}
 
 		/// <summary>
-		/// Constructor for iPhone object
+		/// Constructor for iDevice object
 		/// </summary>
 		/// <param name="myConnectHandler"></param>
 		/// <param name="myDisconnectHandler"></param>
-        public iPhone(ConnectEventHandler myConnectHandler, ConnectEventHandler myDisconnectHandler) {
+        public iDevice(ConnectEventHandler myConnectHandler, ConnectEventHandler myDisconnectHandler) {
 			Connect += myConnectHandler;
 			Disconnect += myDisconnectHandler;
 			doConstruction();
@@ -99,14 +99,18 @@ namespace CFManzana {
 		#region Properties
 
         /// <summary>
-        /// Gets activation state
+        /// Any type of CoreFoundation object from the iDevice would be returned as a string
         /// </summary>
-        unsafe public string ActivationState
+        /// <param name="cfstring"></param>
+        /// <returns></returns>
+        unsafe public string CopyValue(string cfstring)
         {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "ActivationState");
-            }
+            return MobileDevice.AMDeviceCopyValue(iDeviceHandle, cfstring);
+        }
+
+        unsafe public IntPtr CopyDictionary(string cfstring)
+        {
+            return MobileDevice.AMDeviceCopyValue_IntPtr(iDeviceHandle, 0, new CFString(cfstring).ToIntPtr());   
         }
         /// <summary>
         /// Activates the device with a WildCard ticket
@@ -115,7 +119,7 @@ namespace CFManzana {
         /// <returns></returns>
         unsafe public int Activate(IntPtr wildcard_ticket)
         {
-            return MobileDevice.AMDeviceActivate(iPhoneHandle,wildcard_ticket);
+            return MobileDevice.AMDeviceActivate(iDeviceHandle,wildcard_ticket);
 
         }
         /// <summary>
@@ -124,127 +128,10 @@ namespace CFManzana {
         /// <returns></returns>
         unsafe public int Deactivate()
         {
-            return MobileDevice.AMDeviceDeactivate(iPhoneHandle);
+            return MobileDevice.AMDeviceDeactivate(iDeviceHandle);
         }
-
-        /// <summary>
-        /// Return the ActivationInfo of the device
-        /// </summary>
-        /// <returns></returns>
-        unsafe public IntPtr ActivationInfo
-        {   
-            get {
-            return MobileDevice.AMDeviceCopyValue_IntPtr(iPhoneHandle, 0, new CFString("ActivationInfo").ToIntPtr());
-            }
-        }
-
 		/// <summary>
-		/// Gets the current baseband version
-		/// </summary>
-		unsafe public string BasebandVersion {
-			get {
-				return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "BasebandVersion");
-			}
-		}
-
-        unsafe public string DeviceVersion
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "DeviceVersion");
-            }
-        }
-        /// <summary>
-        /// Gets Model Numer
-        /// </summary>
-        unsafe public string ModelNumber
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "ModelNumber");
-            }
-        }
-        /// <summary>
-        /// Gets BL Version
-        /// </summary>
-        unsafe public string BootloaderVersion
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "BasebandBootloaderVersion");
-            }
-        }
-        /// <summary>
-        /// Returns the ECID
-        /// </summary>
-        unsafe public string ECID
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "UniqueChipID");
-            }
-        }
-        /// <summary>
-        /// Gets ProductType
-        /// </summary>
-        unsafe public string ProductType
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "ProductType");
-            }
-        }
-
-        unsafe public string SerialNumber
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "SerialNumber");
-            }
-        }
-        /// <summary>
-        /// Returns The ICCID
-        /// </summary>
-        unsafe public string ICCID
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "IntegratedCircuitCardIdentity");
-            }
-        }
-        /// <summary>
-        /// Returns the IMEI
-        /// </summary>
-        unsafe public string IMEI
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "InternationalMobileEquipmentIdentity");
-            }
-        }
-        /// <summary>
-        /// Returns the IMSI
-        /// </summary>
-        unsafe public string IMSI
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "InternationalMobileSubscriberIdentity");
-            }
-        }
-        /// <summary>
-        /// Returns the PhoneNumber
-        /// </summary>
-        unsafe public string PhoneNumber
-        {
-            get
-            {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "PhoneNumber");
-            }
-        }
-
-		/// <summary>
-		/// Returns true if an iPhone is connected to the computer
+		/// Returns true if an iDevice is connected to the computer
 		/// </summary>
 		public bool IsConnected {
 			get {
@@ -253,25 +140,17 @@ namespace CFManzana {
 		}
 
 		/// <summary>
-		/// Returns the Device information about the connected iPhone
+		/// Returns the Device information about the connected iDevice
 		/// </summary>
 		unsafe public void* Device {
 			get {
-				return iPhoneHandle;
+				return iDeviceHandle;
 			}
 		}
 
-		///<summary>
-		/// Returns the 40-character UUID of the device
-		///</summary>
-		unsafe public string DeviceId {
-			get {
-                return MobileDevice.AMDeviceCopyValue(iPhoneHandle, "UniqueDeviceID");
-			}
-		}
-        
+		
 		/// <summary>
-		/// Returns the handle to the iPhone com.apple.afc service
+		/// Returns the handle to the iDevice com.apple.afc service
 		/// </summary>
 		unsafe public void* AFCHandle {
 			get {
@@ -280,7 +159,7 @@ namespace CFManzana {
 		}
 
         /// <summary>
-        /// Returns if we are connected to jailbroken iphone
+        /// Returns if we are connected to jailbroken iDevice
         /// </summary>
         public Boolean IsJailbreak {
             get {
@@ -308,7 +187,7 @@ namespace CFManzana {
 
 		#region Events
 		/// <summary>
-		/// The <c>Connect</c> event is triggered when a iPhone is connected to the computer
+		/// The <c>Connect</c> event is triggered when a iDevice is connected to the computer
 		/// </summary>
 		public event ConnectEventHandler Connect;
 
@@ -325,7 +204,7 @@ namespace CFManzana {
 		}
 
 		/// <summary>
-		/// The <c>Disconnect</c> event is triggered when the iPhone is disconnected from the computer
+		/// The <c>Disconnect</c> event is triggered when the iDevice is disconnected from the computer
 		/// </summary>
 		public event ConnectEventHandler Disconnect;
 
@@ -376,7 +255,7 @@ namespace CFManzana {
 		}
 
 		/// <summary>
-		/// The RecoveryModeEnter event is triggered when the attached iPhone enters Recovery Mode
+		/// The RecoveryModeEnter event is triggered when the attached iDevice enters Recovery Mode
 		/// </summary>
 		public event EventHandler RecoveryModeEnter;
 
@@ -393,7 +272,7 @@ namespace CFManzana {
 		}
 
 		/// <summary>
-		/// The RecoveryModeLeave event is triggered when the attached iPhone leaves Recovery Mode
+		/// The RecoveryModeLeave event is triggered when the attached iDevice leaves Recovery Mode
 		/// </summary>
 		public event EventHandler RecoveryModeLeave;
 
@@ -682,36 +561,36 @@ namespace CFManzana {
 		/// <returns>status from reopen</returns>
 		unsafe public void ReConnect() {
 			int ans = MobileDevice.AFCConnectionClose(hAFC);
-			ans = MobileDevice.AMDeviceStopSession(iPhoneHandle);
-			ans = MobileDevice.AMDeviceDisconnect(iPhoneHandle);
+			ans = MobileDevice.AMDeviceStopSession(iDeviceHandle);
+			ans = MobileDevice.AMDeviceDisconnect(iDeviceHandle);
 			ConnectToPhone();
 		}
 		#endregion // public Methods
 
 		#region Private Methods
 		unsafe private bool ConnectToPhone() {
-			if (MobileDevice.AMDeviceConnect(iPhoneHandle) == 1) {
+			if (MobileDevice.AMDeviceConnect(iDeviceHandle) == 1) {
 				//int connid;
 
 				throw new Exception("Phone in recovery mode, support not yet implemented");
-				//connid = MobileDevice.AMDeviceGetConnectionID(ref iPhoneHandle);
+				//connid = MobileDevice.AMDeviceGetConnectionID(ref iDeviceHandle);
 				//MobileDevice.AMRestoreModeDeviceCreate(0, connid, 0);
 				//return false;
 			}
-			if (MobileDevice.AMDeviceIsPaired(iPhoneHandle) == 0) {
+			if (MobileDevice.AMDeviceIsPaired(iDeviceHandle) == 0) {
 				return false;
 			}
-			int chk = MobileDevice.AMDeviceValidatePairing(iPhoneHandle);
+			int chk = MobileDevice.AMDeviceValidatePairing(iDeviceHandle);
 			if (chk != 0) {
 				return false;
 			}
 
-			if (MobileDevice.AMDeviceStartSession(iPhoneHandle) == 1) {
+			if (MobileDevice.AMDeviceStartSession(iDeviceHandle) == 1) {
 				return false;
 			}
 
-            if (MobileDevice.AMDeviceStartService(iPhoneHandle, new CFString("com.apple.afc2").ToIntPtr().ToPointer(), ref hService, null) != 0) {
-                if (MobileDevice.AMDeviceStartService(iPhoneHandle, new CFString("com.apple.afc").ToIntPtr().ToPointer(), ref hService, null) != 0) {
+            if (MobileDevice.AMDeviceStartService(iDeviceHandle, new CFString("com.apple.afc2").ToIntPtr().ToPointer(), ref hService, null) != 0) {
+                if (MobileDevice.AMDeviceStartService(iDeviceHandle, new CFString("com.apple.afc").ToIntPtr().ToPointer(), ref hService, null) != 0) {
                     return false;
                 }
             }
@@ -728,7 +607,7 @@ namespace CFManzana {
 
 		unsafe private void NotifyCallback(ref AMDeviceNotificationCallbackInfo callback) {
 			if (callback.msg == NotificationMessage.Connected) {
-				iPhoneHandle = callback.dev;
+				iDeviceHandle = callback.dev;
 				if (ConnectToPhone()) {
 					OnConnect(new ConnectEventArgs(callback));
 				}
