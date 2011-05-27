@@ -49,6 +49,9 @@ namespace CoreFoundation
         #region CFArray
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern IntPtr CFArrayCreate(IntPtr allocator, IntPtr[] keys , int numValues, IntPtr callbacks);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern int CFArrayGetCount(CFArrayRef theArray);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -110,7 +113,10 @@ namespace CoreFoundation
         public static unsafe extern CFPropertyListRef CFPropertyListCreateXMLData(CFPropertyListRef theAllocator, IntPtr theList);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern CFPropertyListRef CFPropertyListCreateFromStream(IntPtr allocator,IntPtr stream, int streamLength,int mutabilityOption,int format,IntPtr errorString);
+        public static unsafe extern CFPropertyListRef CFPropertyListCreateWithData(CFPropertyListRef theAllocator, IntPtr theData, int options, int format,IntPtr errorString);
+
+        [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static unsafe extern CFPropertyListRef CFPropertyListCreateFromStream(IntPtr allocator,IntPtr stream, int length,int options,int format,IntPtr errorString);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern int CFPropertyListWriteToStream(IntPtr propertyList, IntPtr stream, int format,IntPtr errorString);
@@ -121,7 +127,7 @@ namespace CoreFoundation
         #region CFString
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern CFStringRef __CFStringMakeConstantString(string cstring);
+        public static unsafe extern IntPtr __CFStringMakeConstantString(string cstring);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern int CFStringGetLength(CFStringRef handle);

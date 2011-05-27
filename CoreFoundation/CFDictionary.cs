@@ -66,26 +66,17 @@ namespace CoreFoundation
         }
 
         /// <summary>
-        /// Returns the Keys and Values from the Dictionary as a C-String
+        /// String representation of the CFDictionary Object
         /// </summary>
         public override string ToString()
-        {            
-            IntPtr[] keys = new IntPtr[Length()];
-            IntPtr[] values = new IntPtr[Length()];
-            CFLibrary.CFDictionaryGetKeysAndValues(theDict, keys, values);
-            string[] keyz = new string[Length()];
-            string[] valuez = new string[Length()];            
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < Length(); i++)
-            {
-                sb.Append("<key>");
-                keyz[i] = new CFString(keys[i]).ToString();
-                sb.Append(keyz[i] + "</key>\n");
-                sb.Append("<value>");
-                valuez[i] = parseValue(values[i]);                
-                sb.Append(valuez[i] + "</value>\n"); 
-            }
-            return sb.ToString();
+        {
+            string plist = new CFPropertyList(theDict).ToString();
+            
+            string ret = "\0"; 
+            int end = plist.IndexOf(@"<plist version=" + (char)(34) + "1.0" + (char)(34) + ">") + 21; 
+            ret = plist.Remove(0, end); 
+            ret = ret.Remove(ret.IndexOf(@"</plist>")); 
+            return ret;
         }
         public IntPtr ToIntPtr()
         {
@@ -116,6 +107,21 @@ namespace CoreFoundation
                     throw new ArgumentException("Unknown Value:" + desc + ":" + typeRef);
 
             }            
+        }
+
+        public static implicit operator CFDictionary(IntPtr value)
+        {
+            return new CFDictionary(value);
+        }
+
+        public static implicit operator IntPtr(CFDictionary value)
+        {
+            return value.theDict;
+        }
+
+        public static implicit operator string(CFDictionary value)
+        {
+            return value.ToString();
         }
     }
 
@@ -169,4 +175,6 @@ namespace CoreFoundation
     {
         int invoke(IntPtr paramCFType);
     }
+
+    
 }

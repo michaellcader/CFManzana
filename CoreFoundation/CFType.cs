@@ -92,14 +92,24 @@ namespace CoreFoundation
             }
             return String.Empty;  
         }
-        public string ToString()
+
+        static public string extractCFDictionary(string plist)
+        {
+            string ret = "\0";
+            int end = plist.IndexOf(@"<plist version=" + (char)(34) + "1.0" + (char)(34) + ">") + 21;
+            ret = plist.Remove(0, end);
+            ret = ret.Remove(ret.IndexOf(@"</plist>"));
+            return ret;
+        }
+
+        public override string ToString()
         {
             switch (CFLibrary.CFGetTypeID(typeRef))
             {
                 case _CFString:
                     return new CFString(typeRef).ToString();
                 case _CFDictionary:
-                    return new CFPropertyList(typeRef).ToString();
+                    return new CFDictionary(typeRef).ToString();
                 case _CFArray:
                     return new CFArray(typeRef).getCount().ToString();
                 case _CFData:

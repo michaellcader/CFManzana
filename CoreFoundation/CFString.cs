@@ -106,7 +106,25 @@ namespace CoreFoundation
         {
             return CFLibrary.CFGetTypeID(theString) == CFType._CFString;                     
         }
-          
-    }
-         
+
+        public static implicit operator CFString(IntPtr value)
+        {
+            return new CFString(value);
+        }
+
+        public static implicit operator IntPtr(CFString value)
+        {
+            return value.theString;
+        }
+
+        public static implicit operator string(CFString value)
+        {
+            return value.ToString();
+        }
+
+        public static implicit operator CFString(string value)
+        {            
+            return new CFString(value);
+        }
+    }         
 }
