@@ -110,7 +110,7 @@ namespace CFManzana {
 
         unsafe public IntPtr CopyDictionary(string cfstring)
         {
-            return MobileDevice.AMDeviceCopyValue_IntPtr(iDeviceHandle, 0, new CFString(cfstring).ToIntPtr());   
+            return MobileDevice.AMDeviceCopyValue_IntPtr(iDeviceHandle, 0, new CFString(cfstring));   
         }
         /// <summary>
         /// Activates the device with a WildCard ticket
@@ -589,8 +589,8 @@ namespace CFManzana {
 				return false;
 			}
 
-            if (MobileDevice.AMDeviceStartService(iDeviceHandle, new CFString("com.apple.afc2").ToIntPtr().ToPointer(), ref hService, null) != 0) {
-                if (MobileDevice.AMDeviceStartService(iDeviceHandle, new CFString("com.apple.afc").ToIntPtr().ToPointer(), ref hService, null) != 0) {
+            if (MobileDevice.AMDeviceStartService(iDeviceHandle, new CFString("com.apple.afc2"), ref hService, null) != 0) {
+                if (MobileDevice.AMDeviceStartService(iDeviceHandle, new CFString("com.apple.afc"), ref hService, null) != 0) {
                     return false;
                 }
             }

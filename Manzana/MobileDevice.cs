@@ -208,7 +208,7 @@ namespace CFManzana {
 			void* user_info);
 
 		[DllImport(DLLName, CallingConvention=CallingConvention.Cdecl)]
-		unsafe public extern static int AMDeviceStartService(void* device, void* service_name, ref void* handle, void* unknown);
+		unsafe public extern static int AMDeviceStartService(void* device, IntPtr service_name, ref void* handle, void* unknown);
 
 		[DllImport(DLLName, CallingConvention=CallingConvention.Cdecl)]
 		unsafe public extern static int AFCConnectionOpen(void* handle, uint io_timeout, ref void* conn);
@@ -223,11 +223,9 @@ namespace CFManzana {
 		unsafe public extern static int AFCConnectionClose(void* conn);
 
 		unsafe public static string AMDeviceCopyValue(void* device, string name) {               
-            IntPtr result = AMDeviceCopyValue_IntPtr(device, 0, new CFString(name).ToIntPtr());      
-            
+            IntPtr result = AMDeviceCopyValue_IntPtr(device, 0, new CFString(name));
             if (result==IntPtr.Zero)
-                return name;
-             
+                return name;             
             return new CFType(result).ToString();            
 		}
 

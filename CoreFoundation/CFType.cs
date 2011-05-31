@@ -27,20 +27,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace CoreFoundation
 {
     public class CFType
     {
-        public const int _CFString=7;
-        public const int _CFDictionary=17;
-        public const int _CFArray=18;
-        public const int _CFData=19;
-        public const int _CFBoolean=21;
-        public const int _CFNumber=22;
-        public const int _CFError=27;
-        public const int _CFUUID=31;
-        
+        internal const int _CFArray = 18;
+        internal const int _CFBoolean = 21;
+        internal const int _CFData = 19;                
+        internal const int _CFNumber = 22;
+        internal const int _CFPropertyList_CFDictionary = 17;
+        internal const int _CFString=7;
+
         internal IntPtr typeRef;
 
         public CFType() { }
@@ -62,66 +61,83 @@ namespace CoreFoundation
         public string GetDescription()
         {
             return new CFString(CFLibrary.CFCopyDescription(typeRef)).ToString();
-        }
-
-        /// <summary>
-        /// Returns the CFObject type as a string
-        /// </summary>
-        /// <returns></returns>
-        
-        public string CFObjectType()
-        {            
-            switch (CFLibrary.CFGetTypeID(typeRef))
-            {
-                case _CFString:
-                    return "CFString";
-                case _CFDictionary:
-                    return "CFDictionary";
-                case _CFArray:
-                    return "CFArray";
-                case _CFData:
-                    return "CFData";
-                case _CFBoolean:
-                    return "CFBoolean";
-                case _CFNumber:
-                    return "CFNumber";
-                case _CFError:
-                    return "CFError";
-                case _CFUUID:
-                    return "CFUUID";
-            }
-            return String.Empty;  
-        }
-
-        static public string extractCFDictionary(string plist)
+        }       
+                
+        private string CFString()
         {
-            string ret = "\0";
-            int end = plist.IndexOf(@"<plist version=" + (char)(34) + "1.0" + (char)(34) + ">") + 21;
-            ret = plist.Remove(0, end);
-            ret = ret.Remove(ret.IndexOf(@"</plist>"));
-            return ret;
+            if (typeRef == IntPtr.Zero)
+                return null;
+            
+                string str;
+                int length = CFLibrary.CFStringGetLength(typeRef);        
+                IntPtr u = CFLibrary.CFStringGetCharactersPtr(typeRef);
+                IntPtr buffer = IntPtr.Zero;
+                if (u == IntPtr.Zero)
+                {
+                    CFRange range = new CFRange(0, length);
+                    buffer = Marshal.AllocCoTaskMem(length * 2);
+                    CFLibrary.CFStringGetCharacters(typeRef, range, buffer);
+                    u = buffer;
+                }
+                unsafe
+                {
+                    str = new string((char*)u, 0, length);
+                }
+                if (buffer != IntPtr.Zero)
+                    Marshal.FreeCoTaskMem(buffer);
+                return str;
+        }       
+        private string CFNumber()
+        {
+            IntPtr buffer = Marshal.AllocCoTaskMem(CFLibrary.CFNumberGetByteSize(typeRef));
+            bool scs = CFLibrary.CFNumberGetValue(typeRef, CFLibrary.CFNumberGetType(typeRef), buffer);
+            if (scs != true)
+            {
+                return string.Empty;
+            }
+            int type = (int)CFLibrary.CFNumberGetType(typeRef);
+            switch (type)
+            {
+                case 1:
+                    return Marshal.ReadInt16(buffer).ToString();
+                case 2:
+                    return Marshal.ReadInt16(buffer).ToString();
+                case 3:
+                    return Marshal.ReadInt32(buffer).ToString();
+                case 4:
+                    return Marshal.ReadInt64(buffer).ToString();
+                default:
+                    return Enum.GetName(typeof(CFNumber.CFNumberType), type) + " is not supported yet!";
+            }
         }
-
+        private string CFBoolean()
+        {
+            return CFLibrary.CFBooleanGetValue(typeRef).ToString();
+        }
+        private string CFData()
+        {
+            return new CFData(typeRef).ToByteArray().ToString();
+        }
+        private string CFPropertyList()
+        {
+            return Encoding.UTF8.GetString(new CFData(CFLibrary.CFPropertyListCreateXMLData(IntPtr.Zero, typeRef)).ToByteArray());
+        }
         public override string ToString()
         {
             switch (CFLibrary.CFGetTypeID(typeRef))
             {
-                case _CFString:
-                    return new CFString(typeRef).ToString();
-                case _CFDictionary:
-                    return new CFDictionary(typeRef).ToString();
+                case _CFString:                                
+                    return CFString();                
+                case _CFPropertyList_CFDictionary:
+                    return CFPropertyList();
                 case _CFArray:
-                    return new CFArray(typeRef).getCount().ToString();
+                    return CFPropertyList();
                 case _CFData:
-                    return "CFData";
+                    return CFData();
                 case _CFBoolean:
-                    return new CFBoolean(typeRef).ToBoolean().ToString();
+                    return CFBoolean();
                 case _CFNumber:
-                    return new CFNumber(typeRef).ToString();
-                case _CFError:
-                    return "CFError";
-                case _CFUUID:
-                    return "CFUUID";
+                    return CFNumber();                
             }
             return null;
         }

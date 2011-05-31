@@ -51,12 +51,12 @@ namespace CoreFoundation
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public CFType getValue(int index)
+        public IntPtr getValue(int index)
         {
             if (index >= getCount())
-                return null;
+                return IntPtr.Zero;
 
-            return new CFType(CFLibrary.CFArrayGetValueAtIndex(theArray, index));
+            return CFLibrary.CFArrayGetValueAtIndex(theArray, index);
 
         }
     }

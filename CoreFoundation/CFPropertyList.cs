@@ -30,19 +30,48 @@ using System.Text;
 
 namespace CoreFoundation
 {
-    public class CFPropertyList
+    public class CFPropertyList : CFType 
     {
-        internal IntPtr theList;
-
         public CFPropertyList() { }
-        public CFPropertyList(IntPtr PropertyList) { this.theList = PropertyList; }
-        /// <summary>
-        /// Creates an XML-string representation of the specified property list
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
+        public CFPropertyList(IntPtr PropertyList)
+            : base(PropertyList)
         {
-            return Encoding.UTF8.GetString(new CFData(CFLibrary.CFPropertyListCreateXMLData(IntPtr.Zero, theList)).ToByteArray());
-        }                
+        }
+        public CFPropertyList(string plistlocation) 
+        {            
+            IntPtr inputfilename;
+            inputfilename = new CFString(plistlocation);
+
+            IntPtr ifile_CFURLRef = CFLibrary.CFURLCreateWithFileSystemPath(IntPtr.Zero, inputfilename, 2, false);
+            IntPtr ifile_CFReadStreamRef = CFLibrary.CFReadStreamCreateWithFile(IntPtr.Zero, ifile_CFURLRef);
+            if ((CFLibrary.CFReadStreamOpen(ifile_CFReadStreamRef)) == false)
+            {
+                Console.Write("Unable to open input file (CFReadStreamOpen failed)");
+                Environment.Exit(0);
+            }
+            IntPtr PlistRef = CFLibrary.CFPropertyListCreateFromStream(IntPtr.Zero, ifile_CFReadStreamRef, 0, 2, 0, IntPtr.Zero);
+            CFLibrary.CFReadStreamClose(ifile_CFReadStreamRef);
+            typeRef = PlistRef;
+        }
+
+        public static implicit operator CFPropertyList(IntPtr value)
+        {
+            return new CFPropertyList(value);
+        }
+
+        public static implicit operator IntPtr(CFPropertyList value)
+        {
+            return value.typeRef;
+        }
+
+        public static implicit operator string(CFPropertyList value)
+        {
+            return value.ToString();
+        }
+
+        public static implicit operator CFPropertyList(string value)
+        {
+            return new CFPropertyList(value);
+        }               
     }
 }

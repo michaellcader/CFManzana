@@ -127,7 +127,7 @@ namespace CoreFoundation
         #region CFString
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern IntPtr __CFStringMakeConstantString(string cstring);
+        public static unsafe extern CFStringRef __CFStringMakeConstantString(string cstring);
 
         [DllImport("CoreFoundation.dll", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe extern int CFStringGetLength(CFStringRef handle);

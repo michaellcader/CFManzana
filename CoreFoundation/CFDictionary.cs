@@ -32,29 +32,29 @@ using System.Xml;
 
 namespace CoreFoundation
 {
-    public class CFDictionary 
-    {
-        internal IntPtr theDict;
+    public class CFDictionary : CFType
+    {        
         public CFDictionary() { }
 
-        public CFDictionary(IntPtr dictionary){this.theDict = dictionary;}
+        public CFDictionary(IntPtr dictionary) : base(dictionary)
+        {
+        }
 
         unsafe public CFDictionary(string[] keys,IntPtr[] values)
         {
-            IntPtr[] keyz = new IntPtr[keys.Length];            
-            int i;
-            for (i = 0; i < keys.Length; i++)
+            IntPtr[] keyz = new IntPtr[keys.Length];  
+            for (int i = 0; i < keys.Length; i++)
             {
-                keyz[i] = new CFString(keys[i]).ToIntPtr();                
+                keyz[i] = new CFString(keys[i]);                
             }
             CFDictionaryKeyCallBacks kcall = new CFDictionaryKeyCallBacks();
             CFDictionaryValueCallBacks vcall = new CFDictionaryValueCallBacks();                        
-            theDict = CFLibrary.CFDictionaryCreate(IntPtr.Zero,keyz,values,keys.Length,ref kcall,ref vcall);            
+            base.typeRef = CFLibrary.CFDictionaryCreate(IntPtr.Zero,keyz,values,keys.Length,ref kcall,ref vcall);            
         }
        
         public IntPtr getDataValue(string value)
         {            
-            return CFLibrary.CFDictionaryGetValue(theDict, new CFString(value).ToIntPtr());            
+            return CFLibrary.CFDictionaryGetValue(base.typeRef, new CFString(value));            
         }
         /// <summary>
         /// Returns the number of key-value pairs in a dictionary
@@ -62,52 +62,8 @@ namespace CoreFoundation
         /// <returns></returns>
         public int Length()
         {
-            return CFLibrary.CFDictionaryGetCount(theDict);            
-        }
-
-        /// <summary>
-        /// String representation of the CFDictionary Object
-        /// </summary>
-        public override string ToString()
-        {
-            string plist = new CFPropertyList(theDict).ToString();
-            
-            string ret = "\0"; 
-            int end = plist.IndexOf(@"<plist version=" + (char)(34) + "1.0" + (char)(34) + ">") + 21; 
-            ret = plist.Remove(0, end); 
-            ret = ret.Remove(ret.IndexOf(@"</plist>")); 
-            return ret;
-        }
-        public IntPtr ToIntPtr()
-        {
-            return this.theDict;
-        }
-        private string parseValue(IntPtr typeRef)
-        {
-            if (typeRef == IntPtr.Zero)
-                return string.Empty;
-            string desc = new CFType(typeRef).CFObjectType();
-            switch (desc)
-            {
-                case "CFArray":
-                    return null; 
-                case "CFBoolean":
-                    return new CFBoolean(typeRef).ToBoolean().ToString();                
-                case "CFString":
-                    return new CFString(typeRef).ToString();
-                case "CFNumber":
-                    return new CFNumber(typeRef).ToString();
-                case "CFData":
-                    return Convert.ToBase64String(new CFData(typeRef).ToByteArray());
-                case "CFDictionary":
-                    return null;
-                case "CFDate":
-                    return null;
-                default:
-                    throw new ArgumentException("Unknown Value:" + desc + ":" + typeRef);
-
-            }            
-        }
+            return CFLibrary.CFDictionaryGetCount(base.typeRef);            
+        }    
 
         public static implicit operator CFDictionary(IntPtr value)
         {
@@ -116,7 +72,7 @@ namespace CoreFoundation
 
         public static implicit operator IntPtr(CFDictionary value)
         {
-            return value.theDict;
+            return value.typeRef;
         }
 
         public static implicit operator string(CFDictionary value)

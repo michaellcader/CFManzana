@@ -31,16 +31,18 @@ using System.Runtime.InteropServices;
 
 namespace CoreFoundation
 {
-    public class CFNumber
+    public class CFNumber : CFType 
     {
-        internal IntPtr theNumber;
-
+        //internal IntPtr theNumber;
         public CFNumber() { }
-        public CFNumber(IntPtr Number){theNumber = Number;}
+        public CFNumber(IntPtr Number)
+            : base(Number)
+        {
+        }
         unsafe public CFNumber(int Number) 
         {
             int* pNumber=&Number;
-            theNumber = CFLibrary.CFNumberCreate(IntPtr.Zero, CFNumberType.kCFNumberIntType, pNumber);
+            base.typeRef = CFLibrary.CFNumberCreate(IntPtr.Zero, CFNumberType.kCFNumberIntType, pNumber);
         }       
         public enum CFNumberType 
         { 
@@ -61,37 +63,8 @@ namespace CoreFoundation
             kCFNumberNSIntegerType = 15,            
             kCFNumberCGFloatType = 16, 
             kCFNumberMaxType = 16 
-        };
-        public IntPtr ToIntPtr()
-        {
-            return theNumber;
-        }
-        /// <summary>
-        /// Obtains the value of a CFNumber object as a string
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {            
-            IntPtr buffer = Marshal.AllocCoTaskMem(CFLibrary.CFNumberGetByteSize(theNumber));
-            bool scs = CFLibrary.CFNumberGetValue(theNumber, CFLibrary.CFNumberGetType(theNumber), buffer);
-            if (scs != true)
-            {
-                return string.Empty;
-            }
-            int type = (int)CFLibrary.CFNumberGetType(theNumber);            
-            switch(type)
-            {
-                case 1:
-                    return Marshal.ReadInt16(buffer).ToString();
-                case 2:
-                    return Marshal.ReadInt16(buffer).ToString();
-                case 3:
-                    return Marshal.ReadInt32(buffer).ToString();
-                case 4:
-                    return Marshal.ReadInt64(buffer).ToString();
-                default:
-                    return Enum.GetName(typeof(CFNumberType),type) + " is not supported yet!";
-            }            
+        };        
+           
         }
     }
-}
+

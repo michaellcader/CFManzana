@@ -30,20 +30,12 @@ using System.Text;
 using System.Runtime.InteropServices;
 namespace CoreFoundation
 {
-    public class CFBoolean
+    public class CFBoolean : CFType
     {
-        internal IntPtr theBoolean;
-
         public CFBoolean() { }
-        public CFBoolean(IntPtr Number){theBoolean = Number;}
-
-        /// <summary>
-        /// Returns the value of a CFBoolean object as a standard C type Boolean
-        /// </summary>
-        /// <returns></returns>
-        public bool ToBoolean()
+        public CFBoolean(IntPtr Number)
+            : base(Number)
         {
-            return CFLibrary.CFBooleanGetValue(theBoolean);
-        }
+        }       
     }
 }
