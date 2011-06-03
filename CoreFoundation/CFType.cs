@@ -35,9 +35,9 @@ namespace CoreFoundation
     {
         internal const int _CFArray = 18;
         internal const int _CFBoolean = 21;
-        internal const int _CFData = 19;                
+        internal const int _CFData = 19; 
         internal const int _CFNumber = 22;
-        internal const int _CFPropertyList_CFDictionary = 17;
+        internal const int _CFDictionary = 17;
         internal const int _CFString=7;
 
         internal IntPtr typeRef;
@@ -116,7 +116,8 @@ namespace CoreFoundation
         }
         private string CFData()
         {
-            return new CFData(typeRef).ToByteArray().ToString();
+            CFData typeArray = new CFData(typeRef);
+            return Convert.ToBase64String(typeArray.ToByteArray());
         }
         private string CFPropertyList()
         {
@@ -128,7 +129,7 @@ namespace CoreFoundation
             {
                 case _CFString:                                
                     return CFString();                
-                case _CFPropertyList_CFDictionary:
+                case _CFDictionary:
                     return CFPropertyList();
                 case _CFArray:
                     return CFPropertyList();
@@ -140,6 +141,14 @@ namespace CoreFoundation
                     return CFNumber();                
             }
             return null;
+        }
+        public static implicit operator IntPtr(CFType value)
+        {
+            return value.typeRef;
+        }
+        public static implicit operator CFType(IntPtr value)
+        {
+            return new CFType(value);
         }
     }
 }

@@ -33,7 +33,6 @@ namespace CoreFoundation
 {
     public class CFNumber : CFType 
     {
-        //internal IntPtr theNumber;
         public CFNumber() { }
         public CFNumber(IntPtr Number)
             : base(Number)

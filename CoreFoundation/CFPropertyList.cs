@@ -42,12 +42,11 @@ namespace CoreFoundation
             IntPtr inputfilename;
             inputfilename = new CFString(plistlocation);
 
-            IntPtr ifile_CFURLRef = CFLibrary.CFURLCreateWithFileSystemPath(IntPtr.Zero, inputfilename, 2, false);
-            IntPtr ifile_CFReadStreamRef = CFLibrary.CFReadStreamCreateWithFile(IntPtr.Zero, ifile_CFURLRef);
+            IntPtr ifile_IntPtr = CFLibrary.CFURLCreateWithFileSystemPath(IntPtr.Zero, inputfilename, 2, false);
+            IntPtr ifile_CFReadStreamRef = CFLibrary.CFReadStreamCreateWithFile(IntPtr.Zero, ifile_IntPtr);
             if ((CFLibrary.CFReadStreamOpen(ifile_CFReadStreamRef)) == false)
             {
-                Console.Write("Unable to open input file (CFReadStreamOpen failed)");
-                Environment.Exit(0);
+                typeRef = IntPtr.Zero;
             }
             IntPtr PlistRef = CFLibrary.CFPropertyListCreateFromStream(IntPtr.Zero, ifile_CFReadStreamRef, 0, 2, 0, IntPtr.Zero);
             CFLibrary.CFReadStreamClose(ifile_CFReadStreamRef);

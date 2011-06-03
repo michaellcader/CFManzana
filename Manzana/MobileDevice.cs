@@ -31,8 +31,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32;
 using CoreFoundation;
-using CFNumberRef = CoreFoundation.CFNumber;
-
 namespace CFManzana {
 	internal enum AppleMobileErrors
 	{

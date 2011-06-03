@@ -74,5 +74,15 @@ namespace CoreFoundation
                 CFLibrary.CFDataGetBytes(typeRef, new CFRange(0, len), (IntPtr)bufPtr);
             return buffer;            
         }
+
+        public static implicit operator CFData(IntPtr value)
+        {
+            return new CFData(value);
+        }
+
+        public static implicit operator IntPtr(CFData value)
+        {
+            return value.typeRef;
+        }       
     }
 }

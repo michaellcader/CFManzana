@@ -30,20 +30,34 @@ using System.Runtime.InteropServices;
 
 namespace CoreFoundation
 {
-    public class CFArray
+    public class CFArray : CFType
     {
-        internal IntPtr theArray;
-
         public CFArray() { }
-        public CFArray(IntPtr Number) { theArray = Number; }
-
+        public CFArray(IntPtr Number)
+            : base(Number)
+        {
+        }
+        public CFArray(IntPtr[] values)
+        {
+            try
+            {
+                typeRef = CFLibrary.CFArrayCreate(IntPtr.Zero, values, values.Length, IntPtr.Zero);
+            }
+            catch (Exception Ex)
+            {
+                typeRef = IntPtr.Zero;
+            }
+        }
         /// <summary>
         /// Returns the number of values currently in an array
         /// </summary>
         /// <returns></returns>
-        public int getCount()
+        public int GetCount
         {
-            return CFLibrary.CFArrayGetCount(theArray);
+            get
+            {
+                return CFLibrary.CFArrayGetCount(typeRef);
+            }
         }
 
         /// <summary>
@@ -51,12 +65,12 @@ namespace CoreFoundation
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public IntPtr getValue(int index)
-        {
-            if (index >= getCount())
-                return IntPtr.Zero;
+        public CFType GetValue(int index)
+        {            
+            if (index >= GetCount)
+                return new CFType(IntPtr.Zero);
 
-            return CFLibrary.CFArrayGetValueAtIndex(theArray, index);
+            return new CFType(CFLibrary.CFArrayGetValueAtIndex(typeRef, index));
 
         }
     }

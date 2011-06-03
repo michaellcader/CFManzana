@@ -44,5 +44,10 @@ namespace CoreFoundation
         {
             return System.Runtime.InteropServices.Marshal.ReadInt32(theIndex);
         }
+
+        public static implicit operator CFIndex(IntPtr Index)
+        {
+            return new CFIndex(Index);
+        }
     }
 }

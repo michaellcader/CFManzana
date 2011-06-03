@@ -42,7 +42,6 @@ namespace CoreFoundation
         /// <param name="str"></param>
         unsafe public CFString(string str) 
         {
-            Console.Write(str);
             base.typeRef = CFLibrary.__CFStringMakeConstantString(str);
         }
         public CFString(IntPtr myHandle) : base(myHandle)

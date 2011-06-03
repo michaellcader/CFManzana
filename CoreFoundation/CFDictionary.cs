@@ -48,22 +48,40 @@ namespace CoreFoundation
                 keyz[i] = new CFString(keys[i]);                
             }
             CFDictionaryKeyCallBacks kcall = new CFDictionaryKeyCallBacks();
-            CFDictionaryValueCallBacks vcall = new CFDictionaryValueCallBacks();                        
+
+            CFDictionaryValueCallBacks vcall = new CFDictionaryValueCallBacks();
             base.typeRef = CFLibrary.CFDictionaryCreate(IntPtr.Zero,keyz,values,keys.Length,ref kcall,ref vcall);            
         }
        
-        public IntPtr getDataValue(string value)
-        {            
-            return CFLibrary.CFDictionaryGetValue(base.typeRef, new CFString(value));            
+        /// <summary>
+       /// Returns the value associated with a given key.
+       /// </summary>
+       /// <param name="value"></param>
+       /// <returns></returns>
+        public CFType GetValue(string value)
+        {
+            try
+            {
+                return new CFType(CFLibrary.CFDictionaryGetValue(base.typeRef, new CFString(value)));
+            }
+            catch (Exception ex)
+            {
+                return new CFType(IntPtr.Zero);
+            }
+
         }
         /// <summary>
         /// Returns the number of key-value pairs in a dictionary
         /// </summary>
         /// <returns></returns>
-        public int Length()
+        public int Length
         {
-            return CFLibrary.CFDictionaryGetCount(base.typeRef);            
+            get
+            {
+                return CFLibrary.CFDictionaryGetCount(base.typeRef);
+            }
         }    
+
 
         public static implicit operator CFDictionary(IntPtr value)
         {
@@ -79,6 +97,43 @@ namespace CoreFoundation
         {
             return value.ToString();
         }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        public struct CFDictionaryKeyCallBacks
+        {
+            int version;
+            CFDictionaryRetainCallBack retain;
+            CFDictionaryReleaseCallBack release;
+            CFDictionaryCopyDescriptionCallBack copyDescription;
+            CFDictionaryEqualCallBack equal;
+            CFDictionaryHashCallBack hash;
+
+        };
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        public struct CFDictionaryValueCallBacks
+        {
+            int version;
+            CFDictionaryRetainCallBack retain;
+            CFDictionaryReleaseCallBack release;
+            CFDictionaryCopyDescriptionCallBack copyDescription;
+            CFDictionaryEqualCallBack equal;
+        };
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate IntPtr CFDictionaryRetainCallBack(IntPtr allocator, IntPtr value);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate void CFDictionaryReleaseCallBack(IntPtr allocator, IntPtr value);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate IntPtr CFDictionaryCopyDescriptionCallBack(IntPtr value);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate IntPtr CFDictionaryEqualCallBack(IntPtr value1, IntPtr value2);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        internal delegate IntPtr CFDictionaryHashCallBack(IntPtr value);
     }
 
             /*
@@ -88,6 +143,7 @@ namespace CoreFoundation
         public delegate IntPtr CFDictionaryEqualCallBack(IntPtr type1,IntPtr type2);
         public delegate int CFDictionaryHashCallBack(IntPtr type);
              */
+    /*
         public struct CFDictionaryKeyCallBacks
         {
             CFIndex version;
@@ -131,6 +187,9 @@ namespace CoreFoundation
     {
         int invoke(IntPtr paramCFType);
     }
-
+    */
     
+
+
+
 }
