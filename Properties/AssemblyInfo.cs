@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CFManzana")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("CFManzana v2.0")]
+[assembly: AssemblyDescription("A powerful MobileDevice protocol")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CFManzana")]
+[assembly: AssemblyCompany("http://www.twitter.com/iSn0wra1n")]
+[assembly: AssemblyProduct("CFManzana v2.0")]
 [assembly: AssemblyCopyright("Copyright ©  iSn0wra1n 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

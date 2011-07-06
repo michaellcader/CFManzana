@@ -31,6 +31,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32;
 using CoreFoundation;
+using System.Diagnostics;
 namespace CFManzana {
 	internal enum AppleMobileErrors
 	{
@@ -120,23 +121,58 @@ namespace CFManzana {
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void DeviceRestoreNotificationCallback(ref AMRecoveryDevice callback_info);
 
-    internal class MobileDevice {
+    internal class MobileDevice
+    {
+        [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool IsWow64Process([In] IntPtr hProcess, [Out] out bool lpSystemInfo);
 
-        const string DLLName = "iTunesMobileDevice.dll";
-		static readonly FileInfo iTunesMobileDeviceFile = new FileInfo(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Apple Inc.\Apple Mobile Device Support\Shared", "iTunesMobileDeviceDLL", DLLName).ToString());
-		static readonly DirectoryInfo ApplicationSupportDirectory = new DirectoryInfo(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Apple Inc.\Apple Application Support", "InstallDir", Environment.CurrentDirectory).ToString());
-
-        static MobileDevice() 
+        private const string DLLName = "iTunesMobileDevice.dll";
+        public static bool Is64Bit()
         {
-            // try to find the dll automatically
-            string addpath = iTunesMobileDeviceFile.DirectoryName;
-            if (!iTunesMobileDeviceFile.Exists) {
-                addpath = Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles) + @"\Apple\Mobile Device Support\bin";
-				if (!File.Exists(addpath + @"\" + DLLName))
-					addpath = @"C:\Program Files\Apple\Mobile Device Support\bin";
-			}
-            Environment.SetEnvironmentVariable("Path", string.Join(";", new String[] { Environment.GetEnvironmentVariable("Path"), addpath, ApplicationSupportDirectory.FullName }));
-        }       
+            if (IntPtr.Size == 8 || (IntPtr.Size == 4 && Is32BitProcessOn64BitProcessor()))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool Is32BitProcessOn64BitProcessor()
+        {
+            bool retVal;
+            IsWow64Process(Process.GetCurrentProcess().Handle, out retVal);
+            return retVal;
+        }
+        public MobileDevice()
+        {
+        }
+        static MobileDevice()
+        {
+            FileInfo iTunesMobileDeviceFile = null;
+            DirectoryInfo ApplicationSupportDirectory = null;
+            if (Is64Bit() == true)
+            {
+                string dir1 = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Apple Inc.\Apple Mobile Device Support", "InstallDir", "iTunesMobileDevice.dll").ToString() + "iTunesMobileDevice.dll";
+                iTunesMobileDeviceFile = new FileInfo(dir1);
+                string dir2 = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Apple Inc.\Apple Application Support", "InstallDir", Environment.CurrentDirectory).ToString();
+                ApplicationSupportDirectory = new DirectoryInfo(dir2);
+            }
+            else
+            {
+                iTunesMobileDeviceFile = new FileInfo(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Apple Inc.\Apple Mobile Device Support\Shared", "iTunesMobileDeviceDLL", "iTunesMobileDevice.dll").ToString());
+                ApplicationSupportDirectory = new DirectoryInfo(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Apple Inc.\Apple Application Support", "InstallDir", Environment.CurrentDirectory).ToString());
+            }
+
+            string directoryName = iTunesMobileDeviceFile.DirectoryName;
+            if (!iTunesMobileDeviceFile.Exists)
+            {
+                throw new FileNotFoundException("Could not find iTunesMobileDevice file");
+            }
+            Environment.SetEnvironmentVariable("Path", string.Join(";", new string[] { Environment.GetEnvironmentVariable("Path"), directoryName, ApplicationSupportDirectory.FullName }));
+        }
+
 
 		[DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
 		unsafe public extern static int AMDeviceNotificationSubscribe(DeviceNotificationCallback callback, uint unused1, uint unused2, uint unused3, out void* am_device_notification_ptr);
